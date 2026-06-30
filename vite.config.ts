@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -60,4 +61,12 @@ export default defineConfig({
       devOptions: { enabled: false },
     }),
   ],
+  test: {
+    environment: 'jsdom',
+    globals: false,
+    setupFiles: ['./src/test/setup.ts'],
+    css: false,
+    // The PWA virtual module isn't available under Vitest; nothing imports it in
+    // app code, so no stub is needed here.
+  },
 })
