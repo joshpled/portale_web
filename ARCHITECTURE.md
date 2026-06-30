@@ -55,6 +55,7 @@ src/
   components/
     TopBar  Splash  Brunch  ExploreGrid  Menus
     Story   Gallery Reserve  Visit  More   Footer
+    Lightbox  modal photo viewer (used by Gallery)
 index.html       meta tags (theme-color, apple-touch-icon, iOS standalone), fonts
 vite.config.ts   React plugin + VitePWA (manifest, Workbox runtime caching)
 ```
@@ -98,7 +99,11 @@ getbento/imgix CDN), downloaded at build-friendly sizes with `fm=webp`
 
 - **Gallery** tiles are data-driven: `GALLERY_TILES` in `src/data/menus.ts`
   carries an optional `src` + `alt`. A tile with no `src` falls back to its CSS
-  placeholder, so the grid degrades gracefully.
+  placeholder, so the grid degrades gracefully. A photo tile is a `<button>`
+  that opens the photo larger in **`Lightbox`** — a fixed full-viewport modal
+  (`role="dialog"`, `aria-modal`) that closes on backdrop/✕/Escape, locks
+  background scroll, and restores focus to the trigger on close. The larger
+  view reuses the same ~900w `webp` (ample inside the phone frame).
 - **Story** uses one full-width room photo plus two team headshots. The
   headshots render *over* the initials monogram (`AP` / `JG`); an `onError`
   handler hides a broken image so the initials show through — no JS state needed.

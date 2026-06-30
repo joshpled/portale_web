@@ -77,10 +77,26 @@ body {
   opacity: 1;
   transform: none;
 }
+/* Gallery photo buttons: gentle zoom on hover (clipped by the tile's
+   overflow:hidden) signals they're clickable; visible focus ring for keyboard. */
+.gallery-tile-btn img {
+  transition: transform 0.3s ease;
+}
+.gallery-tile-btn:hover img {
+  transform: scale(1.05);
+}
+.gallery-tile-btn:focus-visible {
+  outline: 2px solid #cbb583;
+  outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     transition: none;
     transform: none;
+  }
+  .gallery-tile-btn img {
+    transition: none;
   }
   *,
   *::before,
