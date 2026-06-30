@@ -206,4 +206,6 @@ export const GALLERY_TILES: GalleryTile[] = [
   { label: '[ pasta plate ]', tall: false, src: '/photos/pasta.webp', alt: 'Plated pappardelle pasta' },
   { label: '[ bar detail ]', tall: false, src: '/photos/bar.webp', alt: 'The bar at Portale' },
   { label: '[ brunch table ]', tall: true, src: '/photos/brunch.webp', alt: 'Brunch eggs benedict' },
+  { label: '[ burrata ]', tall: false, src: '/photos/burrata.webp', alt: 'Burrata with prosciutto and greens' },
+  { label: '[ dessert ]', tall: false, src: '/photos/dessert.webp', alt: 'Olive oil cake with gelato' },
 ]

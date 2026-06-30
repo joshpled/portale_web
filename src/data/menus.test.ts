@@ -25,8 +25,8 @@ describe('menu data', () => {
     MENUS.happy.sections.forEach((s) => s.items.forEach((i) => expect(i.price).toBeTruthy()))
   })
 
-  it('has four gallery tiles', () => {
-    expect(GALLERY_TILES).toHaveLength(4)
+  it('has six gallery tiles (even, balanced 2-col grid)', () => {
+    expect(GALLERY_TILES).toHaveLength(6)
   })
 
   it('every gallery tile with a photo has alt text', () => {
