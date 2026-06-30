@@ -1,0 +1,94 @@
+# Architecture
+
+How the Portale mobile PWA fits together. Living map — update when the shape changes.
+
+## Origin
+
+Ported from a Claude Design file, `Portale Mobile.dc.html`. The original used a
+proprietary design runtime (`x-dc`, `DCLogic`, `<sc-for>`/`<sc-if>`, `{{ }}`
+bindings, `support.js`). That runtime is **not** used here — it was a preview
+shell. We re-implemented the same markup, styles, data, and behavior in React so
+the result is a real, deployable, installable app with no dependency on the
+design tool.
+
+Mapping from the design's concepts to this codebase:
+
+| Design construct                     | Here                                            |
+| ------------------------------------ | ----------------------------------------------- |
+| `<sc-for>` over `menus`/`gallery`    | `.map()` over typed data in `src/data/menus.ts` |
+| `<sc-if>` booked / notBooked         | `booked` state + ternary in `Reserve.tsx`       |
+| `{{ goReserve }}` etc. (scroll refs) | `scrollToId('reserve')` in `src/lib/scroll.ts`  |
+| `data-reveal` + IntersectionObserver | `useReveal` hook + CSS `[data-reveal]`          |
+| sticky topbar opacity on scroll      | `useStickyBar` hook                             |
+| inline styles on every element       | inline `style={{}}` objects (kept faithful)     |
+
+## Rendering model
+
+- **One page, many sections.** `App.tsx` renders a fixed 440px-max "phone frame"
+  and stacks the sections in order. Navigation is in-page smooth scroll to
+  section `id`s — there is no router.
+- **Styling is inline**, copied from the source design, so the visual result
+  matches 1:1. Only the bits that *can't* be inline live in `src/index.css`:
+  `@keyframes` (floating shapes, scroll bob), base resets, the `[data-reveal]`
+  fade/slide, and `prefers-reduced-motion` handling.
+- **State is local to where it's used.** Menu tab selection lives in `Menus.tsx`;
+  reservation fields live in `Reserve.tsx`. Nothing is global, so there's no
+  store/context.
+
+## Files
+
+```
+public/
+  assets/        portale-mark.png, portale-wordmark.png   (logo, used in UI)
+  icons/         icon-192/512, maskable-512, apple-touch-icon  (PWA/app icons)
+  favicon.png
+src/
+  main.tsx       React entry; imports index.css
+  App.tsx        phone frame + section order + wires the two hooks
+  index.css      keyframes, resets, reveal CSS, reduced-motion
+  data/menus.ts  typed menu + gallery content (the only "data")
+  lib/scroll.ts  scrollToId() smooth-scroll helper
+  hooks/
+    useReveal.ts    IntersectionObserver → adds .is-visible (staggered)
+    useStickyBar.ts scroll past hero → show top bar
+  components/
+    TopBar  Splash  Brunch  ExploreGrid  Menus
+    Story   Gallery Reserve  Visit  More   Footer
+index.html       meta tags (theme-color, apple-touch-icon, iOS standalone), fonts
+vite.config.ts   React plugin + VitePWA (manifest, Workbox runtime caching)
+```
+
+## PWA
+
+- `vite.config.ts` → `VitePWA`:
+  - `registerType: 'autoUpdate'` — a new SW activates as soon as a new build deploys.
+  - `manifest` — name, `display: standalone`, `theme_color #163b46`,
+    `background_color #0f2e37`, and the 192/512 + **maskable** icons.
+  - `workbox.runtimeCaching` — caches Google Fonts CSS (StaleWhileRevalidate) and
+    font files (CacheFirst) so the shell renders offline.
+- `index.html` carries the iOS-specific tags Safari needs for "Add to Home
+  Screen" (manifest alone isn't enough on iOS): `apple-mobile-web-app-capable`,
+  `apple-mobile-web-app-status-bar-style`, `apple-mobile-web-app-title`, and the
+  `apple-touch-icon` link.
+- The service worker is generated only by `vite build` (disabled in dev). Verify
+  with `npm run build && npm run preview`.
+
+## Icons
+
+All app icons are composited from `public/assets/portale-mark.png` on a `#163b46`
+background with ImageMagick. To regenerate (run from the project root):
+
+```bash
+MARK=public/assets/portale-mark.png
+magick -size 512x512 xc:'#163b46' \( "$MARK" -resize 220x300 \) -gravity center -composite public/icons/icon-512.png
+magick -size 192x192 xc:'#163b46' \( "$MARK" -resize 82x112  \) -gravity center -composite public/icons/icon-192.png
+magick -size 512x512 xc:'#163b46' \( "$MARK" -resize 170x232 \) -gravity center -composite public/icons/maskable-512.png  # extra padding for safe zone
+magick -size 180x180 xc:'#163b46' \( "$MARK" -resize 78x106  \) -gravity center -composite public/icons/apple-touch-icon.png
+magick -size 64x64   xc:'#163b46' \( "$MARK" -resize 28x38   \) -gravity center -composite public/favicon.png
+```
+
+## Deploy
+
+Static SPA. `npm run build` → deploy `dist/` to any static host (Vercel-friendly).
+PWA install needs HTTPS, which hosted platforms provide automatically.
+```
