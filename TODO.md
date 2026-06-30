@@ -6,6 +6,8 @@ Items below are unstarted feature/polish work, roughly highest-value first.
 
 > Workflow reminder: `main` is protected. Each item is its own branch
 > (`feature|fix|chore|refactor/<slug>`) → PR → CI green → squash merge.
+>
+> This list is mirrored in session memory (`portale-project-status.md`). Keep both in sync.
 
 ## Backlog
 
