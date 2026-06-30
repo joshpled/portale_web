@@ -1,9 +1,14 @@
-import { GALLERY_TILES } from '../data/menus'
+import { useState } from 'react'
+import { GALLERY_TILES, type GalleryTile } from '../data/menus'
+import { Lightbox } from './Lightbox'
 
 const tileBg = 'repeating-linear-gradient(135deg,#1f4c58 0 14px,#244f5c 14px 28px)'
 
-// Gallery — placeholder tiles (tall tiles span two rows) matching the design.
+// Gallery — photo tiles (tall tiles span two rows) matching the design.
+// Clicking a photo opens it larger in a lightbox.
 export function Gallery() {
+  const [active, setActive] = useState<GalleryTile | null>(null)
+
   return (
     <section
       id="gallery"
@@ -32,19 +37,31 @@ export function Gallery() {
             }}
           >
             {g.src ? (
-              <img
-                src={g.src}
-                alt={g.alt ?? ''}
-                loading="lazy"
-                decoding="async"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              />
+              <button
+                type="button"
+                className="gallery-tile-btn"
+                onClick={() => setActive(g)}
+                aria-label={`View larger: ${g.alt ?? g.label}`}
+                style={{ border: 'none', padding: 0, margin: 0, background: 'none', cursor: 'pointer', width: '100%', height: '100%', display: 'block' }}
+              >
+                <img
+                  src={g.src}
+                  alt={g.alt ?? ''}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </button>
             ) : (
               <span style={{ fontFamily: 'ui-monospace,Menlo,monospace', fontSize: 10, letterSpacing: 0.5, color: '#9fb6ba' }}>{g.label}</span>
             )}
           </div>
         ))}
       </div>
+
+      {active?.src && (
+        <Lightbox src={active.src} alt={active.alt ?? ''} onClose={() => setActive(null)} />
+      )}
     </section>
   )
 }
