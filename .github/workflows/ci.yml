@@ -1,8 +1,8 @@
 name: CI
 
 # Gate every PR into main (and verify main itself after a squash merge) on
-# typecheck + lint + production build. Add `ci` as a required status check in
-# the branch protection rule so PRs can't merge red.
+# typecheck + lint + test + production build. The job name is the required
+# status check in the branch protection rule, so PRs can't merge red.
 on:
   pull_request:
     branches: [main]
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   ci:
-    name: typecheck · lint · build
+    name: typecheck · lint · test · build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +35,9 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build

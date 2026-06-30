@@ -2,6 +2,7 @@ node_modules
 dist
 dist-ssr
 dev-dist
+coverage
 *.tsbuildinfo
 *.local
 .DS_Store
@@ -12,3 +13,4 @@ yarn-error.log*
 .env
 .env.*
 !.env.example
+.vercel
