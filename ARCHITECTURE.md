@@ -87,8 +87,26 @@ magick -size 180x180 xc:'#163b46' \( "$MARK" -resize 78x106  \) -gravity center 
 magick -size 64x64   xc:'#163b46' \( "$MARK" -resize 28x38   \) -gravity center -composite public/favicon.png
 ```
 
-## Deploy
+## Deploy & CI
 
-Static SPA. `npm run build` → deploy `dist/` to any static host (Vercel-friendly).
-PWA install needs HTTPS, which hosted platforms provide automatically.
+Static SPA built by `npm run build` → `dist/`. PWA install needs HTTPS, which the
+host provides automatically.
+
+**Hosting: Vercel**, connected to the `joshpled/portale_web` GitHub repo (Git
+integration). Vercel auto-detects the Vite preset (build `npm run build`, output
+`dist`), so there is no `vercel.json`.
+
+- **Production:** https://portaleweb.vercel.app — redeploys on every push/merge to `main`.
+- **Previews:** every PR gets its own preview URL (Vercel bot comments it on the PR).
+- `.vercel/` (the local project link) is gitignored.
+
+**CI: GitHub Actions** (`.github/workflows/ci.yml`) — runs `typecheck` → `lint` →
+`build` on `pull_request` to `main` and `push` to `main`. The job
+`typecheck · lint · build` is a **required status check** on `main`, alongside:
+PR required, up-to-date branch (`strict`), linear history, conversation
+resolution, no force-push/delete — all enforced including for admins.
+
+```
+feature/* (off main) → PR ──► CI green + Vercel preview ──► squash merge ──► main: CI + prod deploy
+```
 ```
