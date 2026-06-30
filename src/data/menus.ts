@@ -195,11 +195,15 @@ export const MENUS: Record<MenuId, Menu> = {
 export interface GalleryTile {
   label: string
   tall: boolean
+  /** Photo path under /public. If omitted, the tile renders its CSS placeholder. */
+  src?: string
+  /** Alt text for the photo (required when src is set). */
+  alt?: string
 }
 
 export const GALLERY_TILES: GalleryTile[] = [
-  { label: '[ dining room ]', tall: true },
-  { label: '[ pasta plate ]', tall: false },
-  { label: '[ bar detail ]', tall: false },
-  { label: '[ brunch table ]', tall: true },
+  { label: '[ dining room ]', tall: true, src: '/photos/dining-room.webp', alt: 'Portale main dining room' },
+  { label: '[ pasta plate ]', tall: false, src: '/photos/pasta.webp', alt: 'Plated pappardelle pasta' },
+  { label: '[ bar detail ]', tall: false, src: '/photos/bar.webp', alt: 'The bar at Portale' },
+  { label: '[ brunch table ]', tall: true, src: '/photos/brunch.webp', alt: 'Brunch eggs benedict' },
 ]

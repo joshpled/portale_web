@@ -41,6 +41,7 @@ Mapping from the design's concepts to this codebase:
 public/
   assets/        portale-mark.png, portale-wordmark.png   (logo, used in UI)
   icons/         icon-192/512, maskable-512, apple-touch-icon  (PWA/app icons)
+  photos/        gallery + story + team photos (webp)  — see Photos below
   favicon.png
 src/
   main.tsx       React entry; imports index.css
@@ -86,6 +87,22 @@ magick -size 512x512 xc:'#163b46' \( "$MARK" -resize 170x232 \) -gravity center 
 magick -size 180x180 xc:'#163b46' \( "$MARK" -resize 78x106  \) -gravity center -composite public/icons/apple-touch-icon.png
 magick -size 64x64   xc:'#163b46' \( "$MARK" -resize 28x38   \) -gravity center -composite public/favicon.png
 ```
+
+## Photos
+
+Real photography lives in `public/photos/` as `.webp` and is referenced by
+absolute path (e.g. `/photos/bar.webp`), matching the logo-asset convention.
+Source: the restaurant's own site (`portalerestaurant.com`, served via the
+getbento/imgix CDN), downloaded at build-friendly sizes with `fm=webp`
+(scenes ~900w, the Story room 1100w, headshots 240×240 square crop).
+
+- **Gallery** tiles are data-driven: `GALLERY_TILES` in `src/data/menus.ts`
+  carries an optional `src` + `alt`. A tile with no `src` falls back to its CSS
+  placeholder, so the grid degrades gracefully.
+- **Story** uses one full-width room photo plus two team headshots. The
+  headshots render *over* the initials monogram (`AP` / `JG`); an `onError`
+  handler hides a broken image so the initials show through — no JS state needed.
+- All `<img>` use `loading="lazy"` + `decoding="async"`.
 
 ## Deploy & CI
 

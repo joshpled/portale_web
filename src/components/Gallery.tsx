@@ -31,7 +31,17 @@ export function Gallery() {
               background: tileBg,
             }}
           >
-            <span style={{ fontFamily: 'ui-monospace,Menlo,monospace', fontSize: 10, letterSpacing: 0.5, color: '#9fb6ba' }}>{g.label}</span>
+            {g.src ? (
+              <img
+                src={g.src}
+                alt={g.alt ?? ''}
+                loading="lazy"
+                decoding="async"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            ) : (
+              <span style={{ fontFamily: 'ui-monospace,Menlo,monospace', fontSize: 10, letterSpacing: 0.5, color: '#9fb6ba' }}>{g.label}</span>
+            )}
           </div>
         ))}
       </div>

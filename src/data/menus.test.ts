@@ -28,4 +28,10 @@ describe('menu data', () => {
   it('has four gallery tiles', () => {
     expect(GALLERY_TILES).toHaveLength(4)
   })
+
+  it('every gallery tile with a photo has alt text', () => {
+    for (const tile of GALLERY_TILES) {
+      if (tile.src) expect(tile.alt, `${tile.src} missing alt`).toBeTruthy()
+    }
+  })
 })

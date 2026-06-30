@@ -25,20 +25,46 @@ export function Story() {
       </p>
 
       <div data-reveal style={{ position: 'relative', marginTop: 30, height: 200, borderRadius: 18, overflow: 'hidden', background: 'repeating-linear-gradient(135deg,#e7dcc7 0 18px,#ddd0b6 18px 36px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ fontFamily: 'ui-monospace,Menlo,monospace', fontSize: 11, letterSpacing: 1, color: '#8a7a5a' }}>[ west dining room ]</span>
+        <img
+          src="/photos/west-dining-room.webp"
+          alt="The west dining room at Portale"
+          loading="lazy"
+          decoding="async"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
       </div>
 
       <div data-reveal style={{ position: 'relative', fontSize: 11, letterSpacing: 4, color: '#927750', margin: '34px 0 14px' }}>OUR TEAM</div>
       <div data-reveal style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ flex: 'none', width: 48, height: 48, borderRadius: '50%', background: '#163b46', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbb583', fontFamily: "'Poiret One'", fontSize: 17 }}>AP</div>
+          <div style={{ position: 'relative', flex: 'none', width: 48, height: 48, borderRadius: '50%', overflow: 'hidden', background: '#163b46', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbb583', fontFamily: "'Poiret One'", fontSize: 17 }}>
+            AP
+            <img
+              src="/photos/alfred-portale.webp"
+              alt="Alfred Portale"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => { e.currentTarget.style.display = 'none' }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
           <div>
             <div style={{ fontWeight: 500, color: '#163b46' }}>Alfred Portale</div>
             <div style={{ fontSize: 12, color: '#7a6a52' }}>Executive Chef &amp; Owner</div>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ flex: 'none', width: 48, height: 48, borderRadius: '50%', background: '#927750', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: "'Poiret One'", fontSize: 17 }}>JG</div>
+          <div style={{ position: 'relative', flex: 'none', width: 48, height: 48, borderRadius: '50%', overflow: 'hidden', background: '#927750', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: "'Poiret One'", fontSize: 17 }}>
+            JG
+            <img
+              src="/photos/jacinto-guadarrama.webp"
+              alt="Jacinto Guadarrama"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => { e.currentTarget.style.display = 'none' }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
           <div>
             <div style={{ fontWeight: 500, color: '#163b46' }}>Jacinto Guadarrama</div>
             <div style={{ fontSize: 12, color: '#7a6a52' }}>Chef de Cuisine</div>
